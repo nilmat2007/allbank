@@ -3,55 +3,35 @@
 
 <head>
   <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- Sweet Alert -->
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Loading Overlay -->
-  <script src="https://cdn.jsdelivr.net/npm/loading-overlay"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-    crossorigin="anonymous"></script>
-  <!-- CSS only -->
-  <link href="https://fastly.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-  <!-- JavaScript Bundle with Popper -->
-  <script src="https://fastly.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
-    crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-    integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-    crossorigin="anonymous" />
-  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Mitr&display=swap" rel="stylesheet">
-  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <title>บัญชีธนาคาร</title>
   <style>
-      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai');
-
-  * {
-    box-sizing: border-box;
-    font-family: 'Noto Sans Thai', sans-serif;
-  }
+    * {
+      box-sizing: border-box;
+      font-family: 'Mitr', sans-serif;
+    }
 
     .account-info {
-      background-color: #663399 ;
       color: white;
       padding: 30px;
       border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+      flex-direction: column;
     }
 
     .account-info .details {
       display: flex;
-      align-items: top dis red;
+      align-items: center;
+      margin-bottom: 10px;
     }
 
     .account-info .details img {
@@ -61,45 +41,15 @@
       width: 50px;
     }
 
-    .account-info .details div {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .account-info .details div p {
-      margin: 0;
-    }
-
     .account-info button {
-      background-color:#DA70D6 ;
+      background-color: #DA70D6;
       color: white;
       border: none;
-      padding: 2.5px 2.9px;
+      padding: 5px 10px;
       border-radius: 9px;
       cursor: pointer;
     }
 
-    .upload-section {
-      margin-top: 20px;
-    }
-
-    .upload-section input[type="file"] {
-      display: none;
-    }
-
-    .upload-section label {
-      cursor: pointer;
-    }
-
-    .preview-image {
-      display: none;
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .preview-image img {
-      width: 100%;
-    }
     body {
       height: 100%;
       font-family: 'Mitr', sans-serif;
@@ -114,6 +64,15 @@
     .container {
       max-width: 600px;
     }
+
+    .form-select {
+      margin-top: 20px;
+    }
+
+    .qr-code {
+      margin-top: 10px;
+      max-width: 200px;
+    }
   </style>
 </head>
 
@@ -125,49 +84,105 @@
           <i class="fas fa-exclamation-circle text-warning"></i>
           <span class="text-warning">&emsp; เลขบัญชีใช้ในการโอนเงิน</span>
         </div>
-
       </div>
-        <div class="container mt-5">
-    <div class="account-info">
+    </div>
+
+    <!-- Dropdown for selecting bank -->
+    <select id="bankSelector" class="form-select">
+      <option value="kbank" selected>กสิกรไทย</option>
+      <option value="scb">ไทยพาณิชย์</option>
+      <option value="tmb">ทหารไทย</option>
+      <option value="krungsri">กรุงศรีอยุธยา</option>
+    </select>
+
+    <!-- Account information -->
+    <div id="accountInfo" class="account-info" style="background-color: #008C4A;">
       <div class="details">
-        <img src="https://www.saijai.tech/wp-content/uploads/2022/10/scb-logo.png" alt="Bank Logo">
+        <img src="https://lh3.googleusercontent.com/d/1f_18KW8nyN1G96yC0MCwo1rMP88j_Poy" alt="Bank Logo">
         <div>
-          <p id="textToCopy">เลขบัญชี 156-275071-5</p>
-          <p>ธนาคาร :ไทยพาณิชย์</p>
-          <p>ชื่อ: ภีมฑพัฒน์ นิลมาตย์</p>
+          <p id="accountNumber">เลขบัญชี 130-2-93580-3</p>
+          <p id="bankName">ธนาคาร : กสิกรไทย</p>
+          <p id="accountHolder">ชื่อ: ภีมฑพัฒน์ นิลมาตย์</p>
         </div>
       </div>
+      <img id="qrCode" class="qr-code" src="https://img2.pic.in.th/pic/.zip---.png" alt="QR Code">
       <button onclick="copyText()">คัดลอก</button>
     </div>
-          <br>
-          <br>
-          <br>
-       
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </div>
 
   <script>
-      function copyText() {
-          var textToCopy = document.getElementById("textToCopy").innerText;
-          navigator.clipboard.writeText(textToCopy).then(function () {
-              Swal.fire({
-                  toast: true,
-                  position: 'top-end',
-                  icon: 'success',
-                  title: 'คัดลอกสำเร็จ',
-                  showConfirmButton: false,
-                  timer: 3000,
-                  timerProgressBar: true,
-                  didOpen: (toast) => {
-                      toast.addEventListener('mouseenter', Swal.stopTimer)
-                      toast.addEventListener('mouseleave', Swal.resumeTimer)
-                  }
-              });
-          }).catch(function (error) {
-              console.error('Could not copy text: ', error);
-          });
+    const accountData = {
+      scb: {
+        logo: "https://www.saijai.tech/wp-content/uploads/2022/10/scb-logo.png",
+        number: "156-275071-5",
+        bank: "ไทยพาณิชย์",
+        holder: "ภีมฑพัฒน์ นิลมาตย์",
+        color: "#663399",
+        qr: "https://img2.pic.in.th/pic/.zip---7d31dffc26136578.png"
+      },
+      kbank: {
+        logo: "https://lh3.googleusercontent.com/d/1f_18KW8nyN1G96yC0MCwo1rMP88j_Poy",
+        number: "130-2-93580-3",
+        bank: "กสิกรไทย",
+        holder: "ภีมฑพัฒน์ นิลมาตย์",
+        color: "#008C4A",
+        qr: "https://img2.pic.in.th/pic/.zip---.png"
+      },
+      tmb: {
+        logo: "https://lh3.googleusercontent.com/d/1Q6_GsTUWPYLikW0OAssAhyHnVzCRVUae",
+        number: "003-707982-9",
+        bank: "ทหารไทย",
+        holder: "ภีมฑพัฒน์ นิลมาตย์",
+        color: "#0079C2",
+        qr: "https://via.placeholder.com/200?text=QR+TMB"
+      },
+      krungsri: {
+        logo: "https://lh3.googleusercontent.com/d/1_6V5fNHMJzxmkSnd7YcntZPdYobzhjR7",
+        number: "775-1-16804-7",
+        bank: "กรุงศรีอยุธยา",
+        holder: "ภีมฑพัฒน์ นิลมาตย์",
+        color: "#F4AA00",
+        qr: "https://via.placeholder.com/200?text=QR+Krungsri"
       }
-  </script>
+    };
 
+    const bankSelector = document.getElementById("bankSelector");
+    const accountInfo = document.getElementById("accountInfo");
+
+    bankSelector.addEventListener("change", function () {
+      const selectedBank = bankSelector.value;
+      const data = accountData[selectedBank];
+
+      // Update account information
+      accountInfo.querySelector("img").src = data.logo;
+      document.getElementById("accountNumber").innerText = "เลขบัญชี " + data.number;
+      document.getElementById("bankName").innerText = "ธนาคาร : " + data.bank;
+      document.getElementById("accountHolder").innerText = "ชื่อ: " + data.holder;
+
+      // Update QR code
+      document.getElementById("qrCode").src = data.qr;
+
+      // Change background color
+      accountInfo.style.backgroundColor = data.color;
+    });
+
+    function copyText() {
+      const textToCopy = document.getElementById("accountNumber").innerText;
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "success",
+          title: "คัดลอกสำเร็จ",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true
+        });
+      }).catch((error) => {
+        console.error("Could not copy text: ", error);
+      });
+    }
+  </script>
 </body>
 
-        </html>
+</html>
